@@ -1,3 +1,6 @@
+import pywavefront
+
+
 class Cube:
    corners = (
       # Back face
@@ -24,3 +27,10 @@ class Cube:
       corners[6],
       corners[7]
    )
+
+class Objfile:
+   def __init__(self, objPath):
+      self.object = pywavefront.Wavefront(objPath)
+
+   def getVertices(self):
+      return self.object.vertices

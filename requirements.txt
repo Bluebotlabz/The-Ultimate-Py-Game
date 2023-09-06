@@ -1,3 +1,4 @@
 pygame
 pyopengl
 PyOpenGL_accelerate
+objloader
