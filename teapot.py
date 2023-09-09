@@ -1,12 +1,13 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from OBJFileLoader.OBJFileLoader.objloader import OBJ
+from OBJFileLoader.objloader import OBJ
+import pygame
 import math
 
 class Teapot():
     # Location is X, Y, Z
     # Rotation is pitch, yaw, roll
-    def __init__(self, teapotModel: OBJ, location: list, rotation=[0,0,0], colour=[1, 0, 0], linewidth=2.5, scale=[1, 1, 1]):
+    def __init__(self, teapotModel: OBJ, location: list, rotation=[0,0,0], colour=[1, 0, 0], linewidth=2.5, scale=[0.4, 0.4, 0.4]):
         self.teapotOBJ = teapotModel
         self.location = location
         self.rotation = rotation
@@ -18,32 +19,36 @@ class Teapot():
         ###
         # Point towards player
         ###
+        shootBullet = False
 
         # First calculate Z distance from player
         zDistance = self.location[2] - playerLocation[2]
         xDistance = self.location[0] - playerLocation[0]
 
-        # Now use tangent to figure out the angle
-        if (zDistance == 0):
-            print(playerLocation)
-            print(self.location)
-            print("Z 0")
-            return
+        # Calculate absolute distance to player
+        absDistance = math.sqrt(zDistance**2 + xDistance**2)
+
+        if (absDistance > 5):
+            # Now use tangent to figure out the angle
+            if (zDistance == 0):
+                return shootBullet
+
+            ###
+            # Move towards player
+            ###
+            #zDistance -= 0.1
+            #xDistance -= 0.1
+
+            self.location[0] -= xDistance / 70
+            self.location[2] -= zDistance / 70
+        else: # within distance... SHOOT BOILING TEA!!!
+            shootBullet = True
+
 
         ###
-        # Move towards player
+        # Always face the player regardless
         ###
-        #zDistance -= 0.1
-        #xDistance -= 0.1
-
-        print(playerLocation)
-        print(self.location)
-        print(zDistance)
-        print(xDistance)
-
-        self.location[0] -= xDistance / 70
-        self.location[2] -= zDistance / 70
-
+        
         # Recalculate Z distance from player
         zDistance = self.location[2] - playerLocation[2]
         xDistance = self.location[0] - playerLocation[0]
@@ -51,7 +56,7 @@ class Teapot():
         # Now use tangent to figure out the angle
         if (xDistance == 0):
             self.rotation[1] = 270
-            return
+            return shootBullet
         
         if (zDistance == 0):
             angleToPlayer = 0
@@ -60,10 +65,10 @@ class Teapot():
         
         if (zDistance < 0):
             angleToPlayer -= 180
-        print("\n")
 
         # Make the teapot face the player
         self.rotation[1] = angleToPlayer + 270 # Add 270 degrees
+        return shootBullet
 
     def render(self):
         glPushMatrix()
