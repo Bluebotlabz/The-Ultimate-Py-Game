@@ -41,7 +41,8 @@ class Teapot():
 
             self.location[0] -= xDistance / 70
             self.location[2] -= zDistance / 70
-        else: # within distance... SHOOT BOILING TEA!!!
+        
+        if (pygame.time.get_ticks() % 500 < 3):
             shootBullet = True
 
 
