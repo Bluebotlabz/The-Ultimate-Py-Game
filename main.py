@@ -44,9 +44,6 @@ monologue = [
 	"<USERNAME>\t[PRESS ENTER]",
 	"<RETURN>"
 ]
-
-monologue = []
-
 print("""
 Loading...
 """)
