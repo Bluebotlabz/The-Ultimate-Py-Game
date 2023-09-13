@@ -103,7 +103,7 @@ bullets = []
 
 def RenderGrid(size=70):
 	glLineWidth(1)
-	glColor(0, 128/255, 0)
+	glColor(0, 0.5, 0)
 	glBegin(GL_LINES)
 	xGrid = size
 	yGrid = size
@@ -134,11 +134,10 @@ teapots.append(Teapot(teapotOBJ, [0, -0.5, -50]))
 def renderScene():
 	global score
 	global health
-	
-	# Draw a teapot
+
 	RenderGrid()
 
-	# Spawn new teapots every like, ~3 seconds or when there are no teapots
+	# Spawn new teapots every like, ~5 seconds or when there are no teapots
 	if (pygame.time.get_ticks() % 5000 == 0 or len(teapots) == 1):
 		# Spawn a random number of teapot at a random radius from the player at random angles
 		teapotsToSpawn = random.randint(2, 10)
@@ -146,7 +145,7 @@ def renderScene():
 			teapots.append(Teapot(teapotOBJ, [
 				cameraPosition[0] + random.randint(-10, 10),
 				-0.5,
-				cameraPosition[0] + random.randint(-10, 10)
+				cameraPosition[2] + random.randint(-10, 10)
 			]))
 	
 	# Render teapots
